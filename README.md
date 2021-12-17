@@ -1,4 +1,4 @@
-# AWS S3 downlaod 
+# AWS S3 download
 
 Mininal test for S3 downlaod benchmarking 
 
