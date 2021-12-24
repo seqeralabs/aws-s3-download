@@ -1,3 +1,5 @@
+package io.seqera.s3.download;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -5,8 +7,8 @@ import org.slf4j.LoggerFactory;
  * @author Paolo Di Tommaso <paolo.ditommaso@gmail.com>
  * @author Jordi Deu-Pons <jordi@seqera.io>
  */
-public class Main1 {
-    private static final Logger log = LoggerFactory.getLogger(Main1.class.getSimpleName());
+public class Main {
+    private static final Logger log = LoggerFactory.getLogger(Main.class.getSimpleName());
 
     public static void main(String[] args) {
         if (args.length == 0) {

@@ -1,3 +1,5 @@
+package io.seqera.s3.download;
+
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.services.s3.AmazonS3;

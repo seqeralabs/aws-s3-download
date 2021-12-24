@@ -1,3 +1,5 @@
+package io.seqera.s3.download.ng;
+
 import com.amazonaws.regions.Regions;
 
 /**

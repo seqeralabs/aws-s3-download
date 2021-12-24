@@ -1,3 +1,5 @@
+package io.seqera.s3.download;
+
 import com.amazonaws.s3.S3Exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,6 +8,8 @@ import software.amazon.awssdk.transfer.s3.FileDownload;
 import software.amazon.awssdk.transfer.s3.S3ClientConfiguration;
 import software.amazon.awssdk.transfer.s3.S3TransferManager;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Properties;
@@ -22,6 +26,12 @@ public class DownloaderSDKv2 {
     }
 
     static void download(String targetFile, String bucket, String key, String region) {
+
+        final Path targetPath = Paths.get(targetFile);
+        if (Files.exists(targetPath)) {
+            log.error("Target file {} already exists.", targetFile);
+            System.exit(1);
+        }
 
         final S3TransferManager tm = S3TransferManager.builder()
                 .s3ClientConfiguration(cfg -> configClient(cfg.region(Region.of(region))))
@@ -58,6 +68,5 @@ public class DownloaderSDKv2 {
                 System.exit(1);
             }
         }
-
     }
 }

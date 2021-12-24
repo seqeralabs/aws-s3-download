@@ -19,12 +19,13 @@
         </encoder>
     </appender>
 
-    <root level="WARN">
+    <root level="DEBUG">
         <appender-ref ref="STDOUT" />
     </root>
-    <logger name="io.micronaut.http.client" level="WARN" />
-    <logger name="io.seqera" level="${TOWER_LOG_LEVEL:-DEBUG}"/>
-    <logger name="com.amazonaws" level="WARN" />
-    <logger name="org.hibernate.engine.internal.StatisticalLoggingSessionEventListener" level="WARN"/>
-    
+    <logger name="io.seqera" level="DEBUG"/>
+    <logger name="com.amazonaws" level="${AWS_LOG_LEVEL:-ERROR}"/>
+    <logger name="com.amazonaws.request" level="${AWS_LOG_LEVEL:-ERROR}"/>
+    <logger name="software.amazon.awssdk" level="${AWS_LOG_LEVEL:-ERROR}" />
+    <logger name="software.amazon.awssdk.request" level="${AWS_LOG_LEVEL:-ERROR}" />
+    <Logger name="org.apache.http.wire" level="${AWS_LOG_LEVEL:-WARN}" />
 </configuration>
