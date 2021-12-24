@@ -1,3 +1,5 @@
+package io.seqera.s3.download.ng;
+
 import java.io.File;
 
 import com.amazonaws.AmazonServiceException;
@@ -67,7 +69,7 @@ public class XferMgrDownload {
     public static void main(String[] args) {
         final String USAGE = "\n" +
                 "Usage:\n" +
-                "    XferMgrDownload [--recursive] [--pause] <s3_path> <local_paths>\n\n" +
+                "    io.seqera.s3.download.ng.XferMgrDownload [--recursive] [--pause] <s3_path> <local_paths>\n\n" +
                 "Where:\n" +
                 "    --recursive - Only applied if local_path is a directory.\n" +
                 "                  Copies the contents of the directory recursively.\n\n" +
@@ -92,8 +94,8 @@ public class XferMgrDownload {
                 "                    or is empty, then a file will be created with the object key name\n" +
                 "                    in s3_path.\n\n" +
                 "Examples:\n" +
-                "    XferMgrDownload public_photos/cat_happy.png\n" +
-                "    XferMgrDownload public_photos/ my_photos\n\n";
+                "    io.seqera.s3.download.ng.XferMgrDownload public_photos/cat_happy.png\n" +
+                "    io.seqera.s3.download.ng.XferMgrDownload public_photos/ my_photos\n\n";
 
         if (args.length < 1) {
             System.out.println(USAGE);

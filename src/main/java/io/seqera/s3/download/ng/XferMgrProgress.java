@@ -1,3 +1,5 @@
+package io.seqera.s3.download.ng;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -186,7 +188,7 @@ public class XferMgrProgress {
     public static void main(String[] args) {
         final String USAGE = "\n" +
                 "Usage:\n" +
-                "    XferMgrProgress [--recursive] [--pause] <s3_path> <local_path>\n\n" +
+                "    io.seqera.s3.download.ng.XferMgrProgress [--recursive] [--pause] <s3_path> <local_path>\n\n" +
                 "Where:\n" +
                 "    --recursive - Only applied if local_path is a directory.\n" +
                 "                  Copies the contents of the directory recursively.\n\n" +
@@ -195,9 +197,9 @@ public class XferMgrProgress {
                 "    s3_path     - The S3 destination (bucket/path) to upload the file(s) to.\n\n" +
                 "    local_path  - The path to a local file or directory path to upload to S3.\n\n" +
                 "Examples:\n" +
-                "    XferMgrProgress public_photos/cat_happy.png my_photos/funny_cat.png\n" +
-                "    XferMgrProgress public_photos my_photos/cat_sad.png\n" +
-                "    XferMgrProgress public_photos my_photos\n\n";
+                "    io.seqera.s3.download.ng.XferMgrProgress public_photos/cat_happy.png my_photos/funny_cat.png\n" +
+                "    io.seqera.s3.download.ng.XferMgrProgress public_photos my_photos/cat_sad.png\n" +
+                "    io.seqera.s3.download.ng.XferMgrProgress public_photos my_photos\n\n";
 
         if (args.length < 2) {
             System.out.println(USAGE);

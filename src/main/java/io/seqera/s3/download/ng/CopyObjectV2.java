@@ -1,3 +1,5 @@
+package io.seqera.s3.download.ng;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
