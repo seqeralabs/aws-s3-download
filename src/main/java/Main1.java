@@ -1,92 +1,54 @@
-import java.util.Map;
-import java.util.Properties;
-import java.util.logging.Logger;
-
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.ClientConfiguration;
-import com.amazonaws.ClientConfigurationFactory;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.transfer.Download;
-import com.amazonaws.services.s3.transfer.TransferManager;
-import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Paolo Di Tommaso <paolo.ditommaso@gmail.com>
+ * @author Jordi Deu-Pons <jordi@seqera.io>
  */
 public class Main1 {
-    private static final Logger log = Logger.getLogger(Main1.class.getSimpleName());
+    private static final Logger log = LoggerFactory.getLogger(Main1.class.getSimpleName());
 
-    public static void main(String[ ] args ) {
-        if( args.length== 0 ) {
-            System.out.println("Missing source file");
+    public static void main(String[] args) {
+        if (args.length == 0) {
+            log.error("Missing source file");
             System.exit(1);
         }
 
-        if( !args[0].startsWith("s3://") ) {
-            System.out.println("Download file should start with s3://");
+        if (!args[0].startsWith("s3://")) {
+            log.error("Download file should start with s3://");
             System.exit(1);
         }
 
-        if( args.length==1 )  {
-            System.out.println("Missing target file");
+        if (args.length == 1) {
+            log.error("Missing target file");
             System.exit(1);
         }
 
+        String targetFile = args[1];
         String bucket = args[0].substring(5).split("/")[0];
         String prefix = "s3://" + bucket + "/";
         String key = args[0].substring(prefix.length());
 
         String region = System.getenv("AWS_DEFAULT_REGION");
-        if( region == null ) {
+        if (region == null) {
             region = "eu-west-1";
-            System.out.println("Using AWS region eu-west-1. Use variable AWS_DEFAULT_REGION to change it");
+            log.warn("Using AWS region eu-west-1. Use variable AWS_DEFAULT_REGION to change it");
         }
 
-        final AmazonS3 s3 = AmazonS3ClientBuilder.standard()
-                .withClientConfiguration(buildClientConfiguration())
-                .withRegion(region)
-                .build();
-
-        java.io.File f = new java.io.File(args[1]);
-        TransferManager xfer_mgr = TransferManagerBuilder.standard().withS3Client(s3).build();
-        try {
-            System.out.println(String.format("Starting download region=%s bucket=%s key=%s", region, bucket, key));
-            Download download = xfer_mgr.download(bucket, key, f);
-            download.waitForCompletion();
-            System.out.println(String.format("Done", bucket, key));
+        String sdk = System.getenv("AWS_SDK_VERSION");
+        if (sdk == null) {
+            sdk = "1";
+            log.warn("Using AWS SDK v1. Set variable AWS_SDK_VERSION=2 if you want to use version 2.");
         }
-        catch (InterruptedException e) {
-            System.err.println(e.getMessage());
+
+        if (sdk.equals("1")) {
+            DownloaderSDKv1.download(targetFile, bucket, key, region);
+        } else if (sdk.equals("2")) {
+            DownloaderSDKv2.download(targetFile, bucket, key, region);
+        } else {
+            log.error("Unknown SDK version {}. Set variable AWS_SDK_VERSION to 1 or 2", sdk);
             System.exit(1);
         }
-        catch (AmazonServiceException e) {
-            System.err.println(e.getErrorMessage());
-            System.exit(1);
-        }
-        xfer_mgr.shutdownNow();
-
-
     }
-
-    private static ClientConfiguration buildClientConfiguration() {
-        final Map<String, String> env = System.getenv();
-        final Properties props = System.getProperties();
-        final ClientConfiguration config = new ClientConfiguration();
-
-        if (env.containsKey("AWS_MAX_CONNECTIONS") || props.containsKey("aws.max_connections")) {
-            String maxConnections = env.getOrDefault("AWS_MAX_CONNECTIONS", props.getProperty("aws.max_connections"));
-            try {
-                config.setMaxConnections(Integer.parseInt(maxConnections));
-            }
-            catch (NumberFormatException e) {
-                System.err.println(String.format("Invalid number format max_connections value: %s", maxConnections));
-                System.exit(1);
-            }
-        }
-
-        return config;
-    }
-
 
 }
