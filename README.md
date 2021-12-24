@@ -28,6 +28,19 @@ Run it using
 
     java -jar ./build/libs/aws-s3-download-all.jar <SOURCE S3> <LOCAL PATH>
 
+## Download big file with wire logging
+
+### SDK v1
+
+    AWS_SDK_VERSION=1 AWS_MAX_CONNECTIONS=10 AWS_LOG_LEVEL=DEBUG AWS_DEFAULT_REGION=us-east-1 java -jar ./build/libs/aws-s3-download-all.jar \
+       s3://sra-pub-src-2/ERR1305737/m151221_184918_00127_c100958412550000001823217206251660_s1_p0.1.bax.h5.1 \
+       sample.bax
+
+### SDK v2
+
+    AWS_SDK_VERSION=2 AWS_MAX_CONCURRENCY=10 AWS_LOG_LEVEL=DEBUG AWS_DEFAULT_REGION=us-east-1 java -jar ./build/libs/aws-s3-download-all.jar \
+       s3://sra-pub-src-2/ERR1305737/m151221_184918_00127_c100958412550000001823217206251660_s1_p0.1.bax.h5.1 \
+       sample.bax
 
 ## Download big file
 
